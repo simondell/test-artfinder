@@ -11,7 +11,7 @@ import RatesContext, {
 
 export interface Props {
   onChange: Function;
-  value: string;
+  value?: string;
 }
 
 export default (props: Props) => {
@@ -32,6 +32,7 @@ export default (props: Props) => {
   return (
     <Select
       valueLabels={pairs}
+      value={props.value}
     />
   )
 }
