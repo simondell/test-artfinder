@@ -10,11 +10,27 @@ interface Amount {
   value: number;
 }
 
+type Rate = [CurrencyCodes, number]
+
 function App() {
   let amounts: Amount[] = [
     { denomination: CurrencyCodes.USD, value: 0 },
     { denomination: CurrencyCodes.JPY, value: 0 },
   ]
+
+  const [rates, setRates] = React.useState<Rate[]>([])
+
+  React.useEffect(() => {
+    setRates([
+      [CurrencyCodes['USD'], 1.1250],
+      [CurrencyCodes['JPY'], 122.48],
+      [CurrencyCodes['BGN'], 1.9558],
+      [CurrencyCodes['CZK'], 26.623],
+      [CurrencyCodes['DKK'], 7.4557],
+      [CurrencyCodes['GBP'], 0.89685],
+      [CurrencyCodes['HUF'], 344.90],
+    ])
+  }, [setRates])
 
   return (
     <div className="App">

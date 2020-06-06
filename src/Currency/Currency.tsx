@@ -3,6 +3,8 @@ import {
   CurrencyCodes,
   CurrencyNames,
 } from './Constants'
+import RateComparison from '../Rates/RateComparison'
+import RatePicker from '../Rates/RatePicker'
 import './Currency.css'
 
 interface Props {
@@ -15,28 +17,8 @@ export default (props: Props) => {
     <div
       className="currency"
     >
-      <select
-        value={props.denomination}
-      >
-      {
-        Object.keys(CurrencyNames).map(currencyKey => {
-          const label = CurrencyNames[currencyKey as CurrencyCodes]
-
-          // TODO fill out all the names
-          if(!label) return null
-
-          return (
-            <option
-              key={`currency-${currencyKey}`}
-              // selected={currencyKey === props.denomination}
-              value={currencyKey}
-            >
-              {label}
-            </option>
-          )
-        })
-      }
-      </select>
+      <RateComparison />
+      <RatePicker />
       <input
         name={`currency-value-${props.denomination}`}
         type="text"
