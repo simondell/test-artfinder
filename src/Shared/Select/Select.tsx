@@ -1,7 +1,9 @@
 import React from 'react'
 
+export type SelectPair = [string, string]
+
 interface Props {
-  pairs: [[string, string]]
+  valueLabels: SelectPair[]
   value?: string
 }
 
@@ -10,12 +12,12 @@ export default (props: Props) =>
     value={props.value}
   >
   {
-    props.pairs.map(([key, value]) =>
+    props.valueLabels.map(([value, label]) =>
       <option
-        key={`currency-${key}`}
-        value={key}
+        key={`currency-${value}`}
+        value={value}
       >
-        {value}
+        {label}
       </option>
     )
   }
