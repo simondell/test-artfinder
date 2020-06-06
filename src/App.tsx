@@ -44,6 +44,7 @@ function App() {
           className="converters"
         >
           <MoneyBoard
+            onChangeCurrency={() => undefined}
             comparison={amounts[SECOND].denomination}
             denomination={amounts[FIRST].denomination}
             value={amounts[FIRST].value}
@@ -52,6 +53,7 @@ function App() {
           <span>to</span>
 
           <MoneyBoard
+            onChangeCurrency={() => undefined}
             comparison={amounts[FIRST].denomination}
             denomination={amounts[SECOND].denomination}
             value={amounts[SECOND].value}

@@ -6,6 +6,7 @@ import CurrencyPicker from './CurrencyPicker'
 import './MoneyBoard.css'
 
 interface Props extends RateComparisonProps {
+  onChangeCurrency: Function;
   value: number;
 }
 
@@ -18,7 +19,10 @@ export default (props: Props) => {
         comparison={props.comparison}
         denomination={props.denomination}
       />
-      <CurrencyPicker />
+      <CurrencyPicker
+        onChange={props.onChangeCurrency}
+        value={props.denomination}
+      />
       <input
         name={`currency-value-${props.denomination}`}
         type="text"

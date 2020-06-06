@@ -9,7 +9,12 @@ import RatesContext, {
   Rate
 } from '../Rates/RatesContext'
 
-export default () => {
+export interface Props {
+  onChange: Function;
+  value: string;
+}
+
+export default (props: Props) => {
   const rates = React.useContext(RatesContext)
   const pairs = rates.reduce((pairs, rate: Rate) => {
     const [code] = rate
