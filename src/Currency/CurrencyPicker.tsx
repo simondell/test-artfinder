@@ -10,7 +10,7 @@ import RatesContext, {
 } from '../Rates/RatesContext'
 
 export interface Props {
-  onChange: Function;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   value?: string;
 }
 
@@ -31,6 +31,7 @@ export default (props: Props) => {
 
   return (
     <Select
+      onChange={props.onChange}
       valueLabels={pairs}
       value={props.value}
     />

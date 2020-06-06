@@ -6,7 +6,7 @@ import CurrencyPicker from './CurrencyPicker'
 import './MoneyBoard.css'
 
 interface Props extends RateComparisonProps {
-  onChangeCurrency: Function;
+  onChangeCurrency: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   value: number;
 }
 

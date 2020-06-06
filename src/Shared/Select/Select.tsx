@@ -3,12 +3,14 @@ import React from 'react'
 export type SelectPair = [string, string]
 
 interface Props {
-  valueLabels: SelectPair[]
-  value?: string
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  valueLabels: SelectPair[];
+  value?: string;
 }
 
 export default (props: Props) =>
   <select
+    onChange={props.onChange}
     value={props.value}
   >
   {
@@ -22,3 +24,4 @@ export default (props: Props) =>
     )
   }
   </select>
+;
