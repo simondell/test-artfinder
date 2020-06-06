@@ -1,38 +1,45 @@
 import React from 'react'
-import { $enum } from "ts-enum-util";
-
-import Currencies from './Constants'
+import {
+  CurrencyCodes,
+  CurrencyNames,
+} from './Constants'
 import './Currency.css'
 
 interface Props {
-  denomination: string;
+  denomination: CurrencyCodes
   value: number;
 }
 
-export default (props: Props) =>
-  <div
-    className="currency"
-  >
-    <select>
-    {
-      $enum(Currencies).map((label, code) => {
-        // TODO fill out all the names
-        if(!label) return null
+export default (props: Props) => {
+  return (
+    <div
+      className="currency"
+    >
+      <select>
+      {
+        Object.keys(CurrencyNames).map(currencyKey => {
+          const label = CurrencyNames[currencyKey as CurrencyCodes]
 
-        return (
-          <option
-            key={`currency-${code}`}
-            value={code}
-          >
-            {label}
-          </option>
-        )
-      })
-    }
-    </select>
-    <input
-      name={`currency-value-${props.denomination}`}
-      type="text"
-      value={props.value}
-    />
-  </div>
+          // TODO fill out all the names
+          if(!label) return null
+
+          return (
+            <option
+              key={`currency-${currencyKey}`}
+              selected={currencyKey === props.denomination}
+              value={currencyKey}
+            >
+              {label}
+            </option>
+          )
+        })
+      }
+      </select>
+      <input
+        name={`currency-value-${props.denomination}`}
+        type="text"
+        value={props.value}
+      />
+    </div>
+  )
+}
