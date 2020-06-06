@@ -15,7 +15,9 @@ export default (props: Props) => {
     <div
       className="currency"
     >
-      <select>
+      <select
+        value={props.denomination}
+      >
       {
         Object.keys(CurrencyNames).map(currencyKey => {
           const label = CurrencyNames[currencyKey as CurrencyCodes]
@@ -26,7 +28,7 @@ export default (props: Props) => {
           return (
             <option
               key={`currency-${currencyKey}`}
-              selected={currencyKey === props.denomination}
+              // selected={currencyKey === props.denomination}
               value={currencyKey}
             >
               {label}

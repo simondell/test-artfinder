@@ -11,8 +11,8 @@ interface Amount {
 }
 
 function App() {
-  let exchanges: Amount[] = [
-    { denomination: CurrencyCodes.JPY, value: 0 },
+  let amounts: Amount[] = [
+    { denomination: CurrencyCodes.USD, value: 0 },
     { denomination: CurrencyCodes.JPY, value: 0 },
   ]
 
@@ -26,15 +26,15 @@ function App() {
         className="converters"
       >
         <Currency
-          denomination={exchanges[0].denomination}
-          value={exchanges[0].value}
+          denomination={amounts[0].denomination}
+          value={amounts[0].value}
         />
 
         <span>to</span>
 
         <Currency
-          denomination={exchanges[1].denomination}
-          value={exchanges[1].value}
+          denomination={amounts[1].denomination}
+          value={amounts[1].value}
         />
       </section>
     </div>
