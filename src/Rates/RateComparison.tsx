@@ -1,3 +1,9 @@
 import React from 'react'
 
-export default () => <p>1 USD = 0.8 EUR</p>
+export interface Props {
+  comparison: string;
+  denomination: string;
+}
+
+export default (props: Props) =>
+  <p>1 {props.denomination} = 0.8 {props.comparison}</p>

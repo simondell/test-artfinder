@@ -1,5 +1,5 @@
 import React from 'react';
-import Currency from './Currency/Currency';
+import MoneyBoard from './Currency/MoneyBoard';
 import RatesContext, {
   Rate
 } from './Rates/RatesContext' 
@@ -43,14 +43,16 @@ function App() {
         <section
           className="converters"
         >
-          <Currency
+          <MoneyBoard
+            comparison={amounts[SECOND].denomination}
             denomination={amounts[FIRST].denomination}
             value={amounts[FIRST].value}
           />
 
           <span>to</span>
 
-          <Currency
+          <MoneyBoard
+            comparison={amounts[FIRST].denomination}
             denomination={amounts[SECOND].denomination}
             value={amounts[SECOND].value}
           />

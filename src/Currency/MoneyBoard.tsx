@@ -1,10 +1,11 @@
 import React from 'react'
-import RateComparison from '../Rates/RateComparison'
+import RateComparison, {
+  Props as RateComparisonProps
+} from '../Rates/RateComparison'
 import CurrencyPicker from './CurrencyPicker'
-import './Currency.css'
+import './MoneyBoard.css'
 
-interface Props {
-  denomination: string
+interface Props extends RateComparisonProps {
   value: number;
 }
 
@@ -13,7 +14,10 @@ export default (props: Props) => {
     <div
       className="currency"
     >
-      <RateComparison />
+      <RateComparison
+        comparison={props.comparison}
+        denomination={props.denomination}
+      />
       <CurrencyPicker />
       <input
         name={`currency-value-${props.denomination}`}
