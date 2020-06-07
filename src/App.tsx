@@ -10,15 +10,50 @@ interface Amount {
   value: number;
 }
 
+// TODO enum instead?
+enum Indeces {
+  FIRST,
+  SECOND,
+}
+
+// TODO in a bigger app, genericise actions and types
+export enum ActionTypes {
+  SET_CURRENCY,
+  SET_VALUE,
+  // SET_RATES,
+};
+
+// TODO this one action type handles all three actions. In a real app this would
+//    be three different types (and probably use redux-actions, redux-toolkit or )
+interface Action {
+  denomination?: string;
+  index: Indeces;
+  type: ActionTypes;
+  value?: number;
+};
+
+export function manageAmounts (amounts: Amount[], action: Action): Amount[] {
+  const { index } = action
+
+  switch (action.type) {
+    case ActionTypes.SET_CURRENCY: {
+      const { denomination = amounts[index].denomination } = action
+      return [
+        ...amounts.slice(0, index),
+        { ...amounts[index], denomination },
+        ...amounts.slice(index + 1)
+      ]
+    }
+
+    case ActionTypes.SET_VALUE:
+      return amounts;
+
+    default:
+      return amounts;
+  }
+}
+
 function App() {
-  const FIRST = 0;
-  const SECOND = 1;
-
-  let amounts: Amount[] = [
-    { denomination: 'USD', value: 0 },
-    { denomination: 'JPY', value: 0 },
-  ]
-
   const [rates, setRates] = React.useState<Rate[]>([])
 
   React.useEffect(() => {
@@ -33,6 +68,21 @@ function App() {
     ])
   }, [])
 
+  const [amounts, dispatch] = React.useReducer(manageAmounts, [
+    { denomination: 'USD', value: 0 },
+    { denomination: 'JPY', value: 0 },
+  ])
+
+  function setCurrency (index: Indeces) {
+    return (e: React.ChangeEvent<HTMLSelectElement>) => {
+      dispatch({
+        denomination: e.target.value,
+        index,
+        type: ActionTypes.SET_CURRENCY
+      })
+    }
+  }
+
   return (
     <RatesContext.Provider value={rates}>
       <div className="App">
@@ -44,19 +94,19 @@ function App() {
           className="converters"
         >
           <MoneyBoard
-            onChangeCurrency={(e: React.ChangeEvent<HTMLSelectElement>) => { console.log(e.target.value); }}
-            comparison={amounts[SECOND].denomination}
-            denomination={amounts[FIRST].denomination}
-            value={amounts[FIRST].value}
+            onChangeCurrency={setCurrency(Indeces.FIRST)}
+            comparison={amounts[Indeces.SECOND].denomination}
+            denomination={amounts[Indeces.FIRST].denomination}
+            value={amounts[Indeces.FIRST].value}
           />
 
           <span>to</span>
 
           <MoneyBoard
-            onChangeCurrency={(e: React.ChangeEvent<HTMLSelectElement>) => { console.log(e.target.value); }}
-            comparison={amounts[FIRST].denomination}
-            denomination={amounts[SECOND].denomination}
-            value={amounts[SECOND].value}
+            onChangeCurrency={setCurrency(Indeces.SECOND)}
+            comparison={amounts[Indeces.FIRST].denomination}
+            denomination={amounts[Indeces.SECOND].denomination}
+            value={amounts[Indeces.SECOND].value}
           />
         </section>
       </div>
