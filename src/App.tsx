@@ -4,6 +4,8 @@ import RatesContext, {
   Rate
 } from './Rates/RatesContext' 
 import './App.css';
+import set from './Shared/Helpers/set'
+import updateAt from './Shared/Helpers/updateAt'
 
 interface Amount {
   denomination: string;
@@ -37,21 +39,15 @@ export function manageAmounts (amounts: Amount[], action: Action): Amount[] {
 
   switch (action.type) {
     case ActionTypes.SET_CURRENCY: {
-      const { denomination = amounts[index].denomination } = action
-      return [
-        ...amounts.slice(0, index),
-        { ...amounts[index], denomination },
-        ...amounts.slice(index + 1)
-      ]
+      const { denomination = amounts[index].denomination } = action;
+      const newAmount =  set<Amount>('denomination', denomination, amounts[index]);
+      return updateAt<Amount>(index, newAmount, amounts);
     }
 
     case ActionTypes.SET_VALUE: {
-      const { value = amounts[index].value } = action
-      return [
-        ...amounts.slice(0, index),
-        { ...amounts[index], value },
-        ...amounts.slice(index + 1)
-      ]
+      const { value = amounts[index].value } = action;
+      const newAmount = set<Amount>('value', value, amounts[index]);
+      return updateAt<Amount>(index, newAmount, amounts);
     }
 
     default:
