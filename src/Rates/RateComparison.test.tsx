@@ -4,33 +4,32 @@ import {
   screen,
 } from '@testing-library/react';
 import RateComparison from './RateComparison';
-
-test('renders a currency conversion label', () => {
-  render(
-    <RateComparison
-      comparison="JPY"
-      denomination="USD"
-    />
-  );
-
-  const ratio = screen.getByText(/1 USD = \d+\.\d+ JPY/);
-  expect(ratio).toBeInTheDocument();
-});
+import RatesContext from '../Rates/RatesContext'
 
 test.each([
-  ['USD', 'JPY'],
-  ['GBP', 'JPY'],
-  ['GBP', 'EUR'],
-  ['USD', 'GBP'],
-])('renders "1 %s = nn.nn %s"', (den, com) => {
+  ['USD', '0.7500', 'JPY'],
+  ['GBP', '1.5000', 'JPY'],
+  ['GBP', '0.2500', 'BGN'],
+  ['USD', '0.5000', 'GBP'],
+])('renders "1 %s = %s %s"', (den, rate, com) => {
   render(
-    <RateComparison
-      comparison={com}
-      denomination={den}
-    />
+    <RatesContext.Provider
+      value={[
+        ['BGN', 0.5],
+        ['GBP', 2],
+        ['JPY', 3],
+        ['USD', 4],
+      ]}
+    >
+      <RateComparison
+        comparison={com}
+        denomination={den}
+      />
+    </RatesContext.Provider>
   );
+  const hook = new RegExp(`1 ${den}`)
+  const ratio = screen.getByText(hook);
 
-  const test = new RegExp(`1 ${den} = \\d+\\.\\d+ ${com}`)
-  const ratio = screen.getByText(test);
-  expect(ratio).toBeInTheDocument();
+  const test = new RegExp(`1 ${den} = ${rate} ${com}`)
+  expect(ratio.textContent).toMatch(test)
 });
