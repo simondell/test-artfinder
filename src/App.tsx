@@ -45,8 +45,14 @@ export function manageAmounts (amounts: Amount[], action: Action): Amount[] {
       ]
     }
 
-    case ActionTypes.SET_VALUE:
-      return amounts;
+    case ActionTypes.SET_VALUE: {
+      const { value = amounts[index].value } = action
+      return [
+        ...amounts.slice(0, index),
+        { ...amounts[index], value },
+        ...amounts.slice(index + 1)
+      ]
+    }
 
     default:
       return amounts;
@@ -78,7 +84,17 @@ function App() {
       dispatch({
         denomination: e.target.value,
         index,
-        type: ActionTypes.SET_CURRENCY
+        type: ActionTypes.SET_CURRENCY,
+      })
+    }
+  }
+
+  function setValue (index: Indeces) {
+    return (e: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch({
+        index,
+        type: ActionTypes.SET_VALUE,
+        value: parseFloat(e.target.value),
       })
     }
   }
@@ -95,6 +111,7 @@ function App() {
         >
           <AmountBoard
             onChangeCurrency={setCurrency(Indeces.FIRST)}
+            onChangeValue={setValue(Indeces.FIRST)}
             comparison={amounts[Indeces.SECOND].denomination}
             denomination={amounts[Indeces.FIRST].denomination}
             value={amounts[Indeces.FIRST].value}
@@ -104,6 +121,7 @@ function App() {
 
           <AmountBoard
             onChangeCurrency={setCurrency(Indeces.SECOND)}
+            onChangeValue={setValue(Indeces.SECOND)}
             comparison={amounts[Indeces.FIRST].denomination}
             denomination={amounts[Indeces.SECOND].denomination}
             value={amounts[Indeces.SECOND].value}
