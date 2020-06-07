@@ -2,8 +2,8 @@ import React from 'react'
 import RateComparison, {
   Props as RateComparisonProps
 } from '../Rates/RateComparison'
-import CurrencyPicker from './CurrencyPicker'
-import './MoneyBoard.css'
+import CurrencyPicker from '../Currency/CurrencyPicker'
+import './AmountBoard.css'
 
 interface Props extends RateComparisonProps {
   onChangeCurrency: (event: React.ChangeEvent<HTMLSelectElement>) => void;
