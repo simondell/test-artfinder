@@ -4,7 +4,7 @@ import {
   screen,
 } from '@testing-library/react';
 import App, {
-  ActionTypes,
+  AmountsActionTypes,
   manageAmounts,
 } from './App';
 
@@ -26,18 +26,6 @@ test('renders two text fields for numbers', () => {
   expect(selectors.length).toEqual(2)
 })
 
-test('manageAmounts() returns initial state, by default', () => {
-  const arbitrary = { type: 3 }
-  const initialState = [
-    { denomination: 'EUR', value: 0 },
-    { denomination: 'GBP', value: 0 },
-  ]
-
-  const nextState = manageAmounts(initialState, arbitrary)
-
-  expect(nextState).toEqual(initialState)
-})
-
 test.each([
   [0, 'ISK'],
   [0, 'PHP'],
@@ -47,16 +35,19 @@ test.each([
   const setCurrency = {
     denomination,
     index,
-    type: ActionTypes.SET_CURRENCY,
+    type: AmountsActionTypes.SET_CURRENCY,
   }
-  const initialState = [
-    { denomination: 'EUR', value: 0 },
-    { denomination: 'GBP', value: 0 },
-  ]
+  const initialState = {
+    amounts: [
+      { denomination: 'EUR', value: 0 },
+      { denomination: 'GBP', value: 0 },
+    ],
+    rates: []
+  }
 
   const nextState = manageAmounts(initialState, setCurrency)
 
-  expect(nextState[index].denomination).not.toEqual(initialState[index].denomination)
+  expect(nextState[index].denomination).not.toEqual(initialState.amounts[index].denomination)
   expect(nextState[index].denomination).toEqual(denomination)
 })
 
