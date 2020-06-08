@@ -1,7 +1,8 @@
 import React from 'react';
 import AmountBoard from './Amounts/AmountBoard';
 import RatesContext, {
-  Rate
+  getRate,
+  Rate,
 } from './Rates/RatesContext' 
 import './App.css';
 
@@ -67,25 +68,61 @@ function setRates (rates: Rate[]): RatesAction {
   }
 }
 
-export function manageAmounts (state: ConverterState, action: AmountsAction): Amount[] {
+export function manageAmounts (state: ConverterState, action: AmountsAction): ConverterState {
+  const {
+    amounts,
+    rates,
+  } = state
+
   const { index } = action
-  const { amounts } = state
 
   switch (action.type) {
     case AmountsActionTypes.SET_CURRENCY: {
-      const { denomination = amounts[index].denomination } = action;
-      const newAmount =  set<Amount>('denomination', denomination, amounts[index]);
-      return updateAt<Amount>(index, newAmount, amounts);
+      const {
+        denomination: previousDenomenation,
+        value: previousValue,
+      } = amounts[index]
+      const { denomination = previousDenomenation } = action;
+
+      const previousRate = getRate(previousDenomenation, rates);
+      const denominationRate = getRate(denomination, rates);
+      const ratio = denominationRate / previousRate;
+      const value = previousValue * ratio
+
+      const updated = { denomination, value }
+      const updatedAmounts = updateAt<Amount>(index, updated, amounts);
+
+      return set<ConverterState>('amounts', updatedAmounts, state)
     }
 
     case AmountsActionTypes.SET_VALUE: {
-      const { value = amounts[index].value } = action;
-      const newAmount = set<Amount>('value', value, amounts[index]);
-      return updateAt<Amount>(index, newAmount, amounts);
+      const updated = set<Amount>('value', action.value, amounts[index])
+      // const { value = amounts[index].value } = action;
+      // const newAmount = set<Amount>('value', value, amounts[index]);
+      // return updateAt<Amount>(index, newAmount, amounts);
+
+      const other = index == Indeces.FIRST
+        ? amounts[Indeces.SECOND]
+        : amounts[Indeces.FIRST]
+
+      const {
+        denomination: otherDenomenation,
+        value: otherValue,
+      } = other
+
+      const otherRate = getRate(otherDenomenation, rates);
+      const rate = getRate(updated.denomination, rates);
+      const ratio = otherRate / rate;
+      const newOtherValue = otherValue * ratio
+
+      const updatedOther = set<Amount>('value', newOtherValue, other)
+
+      const newAmounts = [updated, updatedOther]
+      return set<ConverterState>('amounts', newAmounts, state)
     }
 
     default:
-      return amounts;
+      return state;
   }
 }
 
@@ -111,11 +148,9 @@ export function rootReducer (state = defaultState, action: AmountsAction | Rates
       const { rates } = action as RatesAction
       return set<ConverterState>('rates', rates, state);
 
-    case AmountsActionTypes.SET_CURRENCY:
+    case AmountsActionTypes.SET_CURRENCY: 
     case AmountsActionTypes.SET_VALUE: {
-      const amounts = manageAmounts(state, action as AmountsAction);
-      const nextState = set<ConverterState>('amounts', amounts, state);
-      return nextState;
+      return manageAmounts(state, action as AmountsAction);
     }
 
     default:

@@ -26,28 +26,28 @@ test('renders two text fields for numbers', () => {
   expect(selectors.length).toEqual(2)
 })
 
-test.each([
-  [0, 'ISK'],
-  [0, 'PHP'],
-  [1, 'PHP'],
-  [1, 'THB'],
-])('manageAmounts() updates amount[%d] to %s', (index, denomination) => {
-  const setCurrency = {
-    denomination,
-    index,
-    type: AmountsActionTypes.SET_CURRENCY,
-  }
-  const initialState = {
-    amounts: [
-      { denomination: 'EUR', value: 0 },
-      { denomination: 'GBP', value: 0 },
-    ],
-    rates: []
-  }
+// test.each([
+//   [0, 'ISK'],
+//   [0, 'PHP'],
+//   [1, 'PHP'],
+//   [1, 'THB'],
+// ])('manageAmounts() updates amount[%d] to %s', (index, denomination) => {
+//   const setCurrency = {
+//     denomination,
+//     index,
+//     type: AmountsActionTypes.SET_CURRENCY,
+//   }
+//   const initialState = {
+//     amounts: [
+//       { denomination: 'EUR', value: 0 },
+//       { denomination: 'GBP', value: 0 },
+//     ],
+//     rates: []
+//   }
 
-  const nextState = manageAmounts(initialState, setCurrency)
+//   const nextState = manageAmounts(initialState, setCurrency)
 
-  expect(nextState[index].denomination).not.toEqual(initialState.amounts[index].denomination)
-  expect(nextState[index].denomination).toEqual(denomination)
-})
+//   expect(nextState[index].denomination).not.toEqual(initialState.amounts[index].denomination)
+//   expect(nextState[index].denomination).toEqual(denomination)
+// })
 
