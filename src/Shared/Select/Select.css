@@ -1,0 +1,16 @@
+select {
+  appearance: none;
+  border: 0;
+  background-color: rgb(57, 69, 94);
+  color: var(--color-fg);
+  height: calc(var(--sizing-vert-rhythm) * 2);
+  padding: 0 var(--sizing-elem);
+  outline: 0;
+}
+
+select:focus,
+select:-moz-focusring,
+select::-moz-focus-inner {
+  border: 0;
+  outline: 0;
+}

@@ -1,4 +1,5 @@
 import React from 'react'
+import './Select.css'
 
 export type SelectPair = [string, string]
 

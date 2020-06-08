@@ -1,6 +1,15 @@
 .App {
-  background-color: #282c34;
-  color: white;
+  --color-bg: rgb(38, 46, 70);
+  --color-fg: white;
+
+  --sizing-grid: 5px;
+  --sizing-elem: var(--sizing-grid);
+  --sizing-block: calc(var(--sizing-grid) * 2);
+  --sizing-vert-rhythm: calc(var(--sizing-grid) * 4);
+
+
+  background-color: var(--color-bg);
+  color: var(--color-fg);
   padding: 16px;
   width: 500px;
 }
