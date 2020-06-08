@@ -3,3 +3,12 @@
   flex-direction: column;
   align-items: stretch;
 }
+
+input {
+  background-color: rgb(49, 57, 80);
+  border: 0;
+  color: var(--color-fg);
+  font-size: 2em;
+  height: calc(var(--sizing-block) * 8);
+  padding: 0 var(--sizing-block);
+}
